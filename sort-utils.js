@@ -1,10 +1,40 @@
-let stack = 0;
+
 
 const unsorted = generateRandoArray(15);
-// console.log(unsorted);
+console.log('unsorted');
+console.log(unsorted);
 
-const sorted = bubbleSort(unsorted);
-console.log('sorted: ' + sorted);
+//const sorted = quickSort(unsorted);
+const sorted = mergeSort(unsorted);
+console.log('sorted');
+console.log(sorted);
+
+function mergeSort(list) {
+    // console.log(list);
+    // divide & conquer, sorting along the way until done
+    if (list.length < 2) return list;
+    const mid = Math.floor(list.length / 2);
+    const leftSorted = mergeSort(list.slice(0, mid));
+    const rightSorted = mergeSort(list.slice(mid))
+    return merge(leftSorted, rightSorted);
+}
+
+function merge(left, right) {
+    // compare sides, pushing lesser to result
+    const result = [];
+    let indexLeft = 0;
+    let indexRight = 0;
+    while(indexLeft < left.length && indexRight < right.length) {
+        if (left[indexLeft] < right[indexRight]) {
+            result.push(left[indexLeft]);
+            indexLeft++;
+        } else {
+            result.push(right[indexRight]);
+            indexRight++;
+        }
+    }
+    return [...result, ...left.slice(indexLeft), ...right.slice(indexRight)];
+}
 
 function bubbleSort(arr) {
     let swapped;
@@ -36,6 +66,7 @@ function quickSort(arr) {
         if (value < pivot) left.push(value);
         else right.push(value);
     }
+    let stack = 0;
     const sorted = [...quicksort(left), pivot, ...quicksort(right)];
     console.log(`s${stack++} = ${sorted}`);
     return sorted;
